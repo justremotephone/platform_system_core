@@ -727,7 +727,7 @@ bool Service::Start() {
     } else {
         scon = ComputeContextFromExecutable(name_, args_[0]);
         if (scon == "") {
-            return false;
+            LOG(WARNING) << "computed context for service '" << name_ << "' is empty -> ingored!";
         }
     }
 
