@@ -58,9 +58,17 @@ void DescriptorInfo::CreateAndPublish(const std::string& globalContext) const {
 
   // Publish
   std::string publishedName = key() + name_;
-  std::for_each(publishedName.begin(), publishedName.end(),
-                [] (char& c) { c = isalnum(c) ? c : '_'; });
-
+  
+  if (name_ != "rild-debug")
+  {
+  	std::for_each(publishedName.begin(), publishedName.end(),
+       	         [] (char& c) { c = isalnum(c) ? c : '_'; });
+  }
+  else
+  {
+  	LOG(ERROR) << "DescriptorInfo::CreateAndPublish: skipping escaping illegal charecters for 'rild-debug' for legacy rild support!";
+  }
+  
   std::string val = std::to_string(fd);
   add_environment(publishedName.c_str(), val.c_str());
 
