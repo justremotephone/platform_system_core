@@ -298,30 +298,30 @@ void Service::SetProcessAttributes() {
 
     if (gid_) {
         if (setgid(gid_) != 0) {
-            PLOG(FATAL) << "setgid failed for " << name_;
+            PLOG(ERROR) << "setgid failed for " << name_;
         }
     }
     if (setgroups(supp_gids_.size(), &supp_gids_[0]) != 0) {
-        PLOG(FATAL) << "setgroups failed for " << name_;
+        PLOG(ERROR) << "setgroups failed for " << name_;
     }
     if (uid_) {
         if (setuid(uid_) != 0) {
-            PLOG(FATAL) << "setuid failed for " << name_;
+            PLOG(ERROR) << "setuid failed for " << name_;
         }
     }
     if (!seclabel_.empty()) {
         if (setexeccon(seclabel_.c_str()) < 0) {
-            PLOG(FATAL) << "cannot setexeccon('" << seclabel_ << "') for " << name_;
+            PLOG(ERROR) << "cannot setexeccon('" << seclabel_ << "') for " << name_;
         }
     }
     if (priority_ != 0) {
         if (setpriority(PRIO_PROCESS, 0, priority_) != 0) {
-            PLOG(FATAL) << "setpriority failed for " << name_;
+            PLOG(ERROR) << "setpriority failed for " << name_;
         }
     }
     if (capabilities_.any()) {
         if (!SetCapsForExec(capabilities_)) {
-            LOG(FATAL) << "cannot set capabilities for " << name_;
+            LOG(ERROR) << "cannot set capabilities for " << name_;
         }
     } else if (uid_) {
         // Inheritable caps can be non-zero when running in a container.
