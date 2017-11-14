@@ -373,9 +373,7 @@ static void usb_adb_init()
     }
 
     D("[ usb_init - starting thread ]");
-    if (!adb_thread_create(usb_adb_open_thread, h)) {
-        fatal_errno("cannot create usb thread");
-    }
+    std::thread(usb_adb_open_thread, h).detach();
 }
 
 bool init_functionfs(struct usb_handle* h) {
