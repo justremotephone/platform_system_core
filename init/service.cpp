@@ -829,9 +829,12 @@ Result<Success> Service::Start() {
     } else {
         auto result = ComputeContextFromExecutable(args_[0]);
         if (!result) {
-            return result.error();
+            LOG(WARNING) << "computed context for service '" << name_ << "' is empty -> ingored!";
         }
-        scon = *result;
+        else
+	{
+		scon = *result;
+	}
     }
 
     LOG(INFO) << "starting service '" << name_ << "'...";
